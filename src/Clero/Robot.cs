@@ -81,12 +81,14 @@ public class Robot
 
         var isObstacleHit = false;
         
-        if (newPosition.X < 0 || newPosition.X >= _room.GetLength(0) || newPosition.Y < 0 || newPosition.Y >= _room.GetLength(1))
+        if (newPosition.X < 0
+            || newPosition.X >= _room.GetLength(1)
+            || newPosition.Y < 0
+            || newPosition.Y >= _room.GetLength(0))
         {
             isObstacleHit = true;
         }
-        
-        if (_room[newPosition.X, newPosition.Y] == CellKind.Obstacle)
+        else if (_room[newPosition.Y, newPosition.X] == CellKind.Obstacle)
         {
             isObstacleHit = true;
         }
@@ -116,10 +118,10 @@ public class Robot
     {
         var newPosition = Direction switch
         {
-            Direction.North => new Position(Position.X, Position.Y - 1),
-            Direction.East => new Position(Position.X + 1, Position.Y),
-            Direction.South => new Position(Position.X, Position.Y + 1),
-            Direction.West => new Position(Position.X - 1, Position.Y),
+            Direction.North => Position with { Y = Position.Y - 1 },
+            Direction.East => Position with { X = Position.X + 1 },
+            Direction.South => Position with { Y = Position.Y + 1 },
+            Direction.West => Position with { X = Position.X - 1 },
             _ => throw new ArgumentOutOfRangeException()
         };
         
@@ -130,10 +132,10 @@ public class Robot
     {
         var newPosition = Direction switch
         {
-            Direction.North => new Position(Position.X, Position.Y + 1),
-            Direction.East => new Position(Position.X - 1, Position.Y),
-            Direction.South => new Position(Position.X, Position.Y - 1),
-            Direction.West => new Position(Position.X + 1, Position.Y),
+            Direction.North => Position with { Y = Position.Y + 1 },
+            Direction.East => Position with { X = Position.X - 1 },
+            Direction.South => Position with { Y = Position.Y - 1 },
+            Direction.West => Position with { X = Position.X + 1 },
             _ => throw new ArgumentOutOfRangeException()
         };
         
@@ -147,7 +149,7 @@ public class Robot
             return ActionResult.OutOfBattery;
         }
         
-        _room[Position.X, Position.Y] = CellKind.Clean;
+        _room[Position.Y, Position.X] = CellKind.Clean;
         
         return ActionResult.Success;
     }
