@@ -9,15 +9,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Clero\Clero.csproj" />
+        <ProjectReference Include="..\Clero\Clero.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Spectre.Console.Cli" />
+        <PackageReference Include="Spectre.Console.Cli" />
+        <PackageReference Include="JetBrains.Annotations" />
     </ItemGroup>
 
     <ItemGroup>
         <Using Include="Spectre.Console.Cli" />
+        <Using Include="JetBrains.Annotations" />
     </ItemGroup>
 
 </Project>

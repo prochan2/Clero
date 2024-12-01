@@ -2,6 +2,7 @@
 
 internal partial class CleanCommand
 {
+    [UsedImplicitly]
     internal sealed class CleanCommandSettings : CommandSettings
     {
         [CommandArgument(0, "<source>")]
