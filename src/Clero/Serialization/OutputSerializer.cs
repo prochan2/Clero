@@ -1,7 +1,4 @@
-﻿using System.Text.Json;
-using System.Text.Json.Nodes;
-
-namespace Clero.Serialization;
+﻿namespace Clero.Serialization;
 
 public class OutputSerializer
 {
