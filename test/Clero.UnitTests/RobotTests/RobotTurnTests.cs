@@ -1,10 +1,13 @@
 ﻿using Clero.Actions;
 using Clero.UnitTests.Services;
+using Xunit.Abstractions;
 
 namespace Clero.UnitTests.RobotTests;
 
-public class RobotTurnTests
+public class RobotTurnTests : TestBase
 {
+    public RobotTurnTests(ITestOutputHelper output) : base(output) { }
+
     private static Robot CreateTestRobot(
         Direction initialDirection = Direction.North,
         int initialBatteryLevel = 1)

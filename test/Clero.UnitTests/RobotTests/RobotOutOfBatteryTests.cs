@@ -1,10 +1,13 @@
 ﻿using Clero.Actions;
 using Clero.UnitTests.Services;
+using Xunit.Abstractions;
 
 namespace Clero.UnitTests.RobotTests;
 
-public class RobotOutOfBatteryTests
+public class RobotOutOfBatteryTests : TestBase
 {
+    public RobotOutOfBatteryTests(ITestOutputHelper output) : base(output) { }
+
     private static void TestActionOutOfBattery(int initialBatteryLevel, RobotAction action)
     {
         // Not running out of battery would cause hitting an obstacle when moving.

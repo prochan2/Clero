@@ -1,10 +1,13 @@
 ﻿using Clero.Actions;
 using Clero.UnitTests.Services;
+using Xunit.Abstractions;
 
 namespace Clero.UnitTests.RobotTests;
 
-public class RobotMoveTests
+public class RobotMoveTests : TestBase
 {
+    public RobotMoveTests(ITestOutputHelper output) : base(output) { }
+
     private static Robot CreateTestRobot(
         CellKind[,] room,
         bool throwsOnBackOff,
