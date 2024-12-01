@@ -6,11 +6,11 @@ public sealed class DefaultBackOffStrategy : IBackOffStrategy
 {
     private readonly RobotAction[][] _backOffActions =
     [
-        [RobotActions.TurnRight, RobotActions.Advance, RobotActions.TurnLeft],
-        [RobotActions.TurnRight, RobotActions.Advance, RobotActions.TurnRight],
-        [RobotActions.TurnRight, RobotActions.Advance, RobotActions.TurnRight],
-        [RobotActions.TurnRight, RobotActions.Back, RobotActions.TurnRight, RobotActions.Advance],
-        [RobotActions.TurnLeft, RobotActions.TurnLeft, RobotActions.Advance]
+        [RobotTurn.TurnRight, RobotTurn.Advance, RobotTurn.TurnLeft],
+        [RobotTurn.TurnRight, RobotTurn.Advance, RobotTurn.TurnRight],
+        [RobotTurn.TurnRight, RobotTurn.Advance, RobotTurn.TurnRight],
+        [RobotTurn.TurnRight, RobotTurn.Back, RobotTurn.TurnRight, RobotTurn.Advance],
+        [RobotTurn.TurnLeft, RobotTurn.TurnLeft, RobotTurn.Advance]
     ];
     
     public ActionResult BackOff(Robot robot)

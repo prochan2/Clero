@@ -1,6 +1,6 @@
 ﻿namespace Clero.UnitTests.Services;
 
-public class ThrowingBackOffStrategy : IBackOffStrategy
+internal sealed class ThrowingBackOffStrategy : IBackOffStrategy
 {
     public ActionResult BackOff(Robot robot)
     {

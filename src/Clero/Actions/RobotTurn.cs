@@ -1,6 +1,6 @@
 ﻿namespace Clero.Actions;
 
-public static class RobotActions
+public static class RobotTurn
 {
     public static RobotAction TurnLeft = r => r.TurnLeft();
     
