@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+  <PropertyGroup>
+
+    <!-- https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management -->
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+
+    <!-- https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management#transitive-pinning -->
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+
+  </PropertyGroup>
+
+  <ItemGroup>
+  </ItemGroup>
+
+</Project>

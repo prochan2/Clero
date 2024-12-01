@@ -1,0 +1,11 @@
+<Project>
+
+  <!-- https://aka.ms/dotnet/msbuild/customize -->
+  <PropertyGroup>
+
+    <!-- https://learn.microsoft.com/en-us/dotnet/core/sdk/artifacts-output -->
+    <ArtifactsPath>$(MSBuildThisFileDirectory)artifacts</ArtifactsPath>
+
+  </PropertyGroup>
+
+</Project>
