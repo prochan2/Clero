@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Serialization\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Serilog" />
   </ItemGroup>
   
