@@ -1,17 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project>
-
   <PropertyGroup>
-
     <!-- https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management -->
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-
     <!-- https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management#transitive-pinning -->
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
-
   </PropertyGroup>
-
   <ItemGroup>
+    <PackageVersion Include="Spectre.Console.Cli" Version="0.49.1" />
   </ItemGroup>
-
 </Project>
