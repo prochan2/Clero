@@ -1,4 +1,6 @@
-﻿namespace Clero;
+﻿using Clero.Actions;
+
+namespace Clero;
 
 public class Robot
 {
@@ -28,6 +30,24 @@ public class Robot
         
         _room[Position.Y, Position.X] = CellKind.DirtyVisited;
     }
+
+    private void LogAction(string action, ActionResult status)
+    {
+        Log.Verbose(
+            "{action}: {status} | [{x}, {y}] > {direction} / bat {battery}",
+            action,
+            status,
+            Position.X,
+            Position.Y,
+            Direction.ToString()[0],
+            BatteryLevel);
+    }
+    
+    private ActionResult LogAndReturn(string action, ActionResult status)
+    {
+        LogAction(action, status);
+        return status;
+    }
     
     private bool ConsumeEnergy(int energy)
     {
@@ -43,9 +63,11 @@ public class Robot
 
     public ActionResult TurnLeft()
     {
+        const string action = "TL";
+        
         if (!ConsumeEnergy(1))
         {
-            return ActionResult.OutOfBattery;
+            return LogAndReturn(action, ActionResult.OutOfBattery);
         }
         
         Direction = Direction switch
@@ -57,14 +79,16 @@ public class Robot
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        return ActionResult.Success;
+        return LogAndReturn(action, ActionResult.Success);
     }
     
     public ActionResult TurnRight()
     {
+        const string action = "TR";
+        
         if (!ConsumeEnergy(1))
         {
-            return ActionResult.OutOfBattery;
+            return LogAndReturn(action, ActionResult.OutOfBattery);
         }
         
         Direction = Direction switch
@@ -76,7 +100,7 @@ public class Robot
             _ => throw new ArgumentOutOfRangeException()
         };
         
-        return ActionResult.Success;
+        return LogAndReturn(action, ActionResult.Success);
     }
     
     private ActionResult MoveTo(Position newPosition, int energyRequired)
@@ -107,13 +131,19 @@ public class Robot
                 return ActionResult.Obstacle;
             }
 
+            Log.Verbose("Backing off...");
             _isBackingOff = true;
-            
-            var backOffResult = _backOffStrategy.BackOff(this);
 
-            _isBackingOff = false;
-
-            return backOffResult;
+            try
+            {
+                var backOffResult = _backOffStrategy.BackOff(this);
+                Log.Verbose("Backed off: {result}", backOffResult);
+                return backOffResult;
+            }
+            finally
+            {
+                _isBackingOff = false;
+            }
         }
         
         Position = newPosition;
@@ -136,8 +166,8 @@ public class Robot
             Direction.West => Position with { X = Position.X - 1 },
             _ => throw new ArgumentOutOfRangeException()
         };
-        
-        return MoveTo(newPosition, 2);
+
+        return LogAndReturn("A", MoveTo(newPosition, 2));
     }
 
     public ActionResult Back()
@@ -151,17 +181,34 @@ public class Robot
             _ => throw new ArgumentOutOfRangeException()
         };
         
-        return MoveTo(newPosition, 3);
+        return LogAndReturn("B", MoveTo(newPosition, 3));
     }
 
     public ActionResult Clean()
     {
+        const string action = "C";
+        
         if (!ConsumeEnergy(5))
         {
-            return ActionResult.OutOfBattery;
+            return LogAndReturn(action, ActionResult.OutOfBattery);
         }
         
         _room[Position.Y, Position.X] = CellKind.Clean;
+        
+        return LogAndReturn("C", ActionResult.Success);
+    }
+
+    public ActionResult Execute(IEnumerable<RobotAction> sequence)
+    {
+        foreach (var action in sequence)
+        {
+            var result = action(this);
+
+            if (result != ActionResult.Success)
+            {
+                return result;
+            }
+        }
         
         return ActionResult.Success;
     }

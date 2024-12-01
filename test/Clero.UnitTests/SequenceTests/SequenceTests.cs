@@ -1,9 +1,19 @@
 ﻿using Clero.Actions;
+using Serilog;
+using Xunit.Abstractions;
 
 namespace Clero.UnitTests.SequenceTests;
 
 public class SequenceTests
 {
+    public SequenceTests(ITestOutputHelper output)
+    {
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Verbose()
+            .WriteTo.TestOutput(output)
+            .CreateLogger();
+    }
+
     [Fact]
     public void Test1SequencePasses()
     {

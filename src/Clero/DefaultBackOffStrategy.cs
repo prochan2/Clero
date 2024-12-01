@@ -15,8 +15,12 @@ public sealed class DefaultBackOffStrategy : IBackOffStrategy
     
     public ActionResult BackOff(Robot robot)
     {
+        var i = 1;
+        
         foreach (var actions in _backOffActions)
         {
+            Log.Verbose("Attempt #{i}", i++);
+            
             ActionResult result = ActionResult.Unknown;
             
             foreach (var action in actions)
@@ -30,12 +34,14 @@ public sealed class DefaultBackOffStrategy : IBackOffStrategy
                     
                     case ActionResult.OutOfBattery:
                     case ActionResult.Obstacle:
-                        break;
+                        goto attempted;
                     
                     default:
                         throw new InvalidOperationException();
                 }
             }
+            
+            attempted:
 
             switch (result)
             {
