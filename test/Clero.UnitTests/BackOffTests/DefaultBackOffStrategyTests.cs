@@ -32,4 +32,30 @@ public class DefaultBackOffStrategyTests : TestBase
         var expectedBatteryLevel = 94;
         Test(room, initialPosition, initialDirection, expectedPosition, expectedDirection, expectedBatteryLevel);
     }
+    
+    [Fact]
+    public void Sequence2SavesTheDay()
+    {
+        var room = new[,] { { CellKind.DirtyUnvisited, CellKind.DirtyUnvisited } };
+        var initialPosition = new Position(0, 0);
+        var initialDirection = Direction.West;
+        var expectedPosition = new Position(1, 0);
+        var expectedDirection = Direction.South;
+        var expectedBatteryLevel = 91;
+        Test(room, initialPosition, initialDirection, expectedPosition, expectedDirection, expectedBatteryLevel);
+    }
+    
+    [Fact]
+    public void Sequence3SavesTheDay()
+    {
+        var room = new[,] { { CellKind.DirtyUnvisited, CellKind.DirtyUnvisited } };
+        var initialPosition = new Position(0, 0);
+        var initialDirection = Direction.South;
+        var expectedPosition = new Position(1, 0);
+        var expectedDirection = Direction.South;
+        var expectedBatteryLevel = 88;
+        Test(room, initialPosition, initialDirection, expectedPosition, expectedDirection, expectedBatteryLevel);
+    }
+    
+    // TODO: Use cases for other sequences
 }

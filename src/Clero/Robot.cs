@@ -33,6 +33,7 @@ public class Robot
 
     private void LogAction(string action, ActionResult status)
     {
+        // TODO: Use DI to avoid logging race conditions in parallel tests.
         Log.Verbose(
             "{action}: {status} | [{x}, {y}] > {direction} / bat {battery}",
             action,
