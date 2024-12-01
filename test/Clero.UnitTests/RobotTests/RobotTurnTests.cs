@@ -3,7 +3,7 @@ using Clero.UnitTests.Services;
 
 namespace Clero.UnitTests.RobotTests;
 
-public class RobotActionsTests
+public class RobotTurnTests
 {
     private static Robot CreateTestRobot(
         Direction initialDirection = Direction.North,
