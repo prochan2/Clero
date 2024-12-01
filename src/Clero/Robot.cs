@@ -4,6 +4,8 @@ namespace Clero;
 
 public class Robot
 {
+    // TODO: Encapsulate the room, position, direction and battery level to enhance readability.
+    
     private readonly CellKind[,] _room;
     private readonly IBackOffStrategy _backOffStrategy;
     

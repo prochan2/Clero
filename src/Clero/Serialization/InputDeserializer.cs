@@ -1,10 +1,11 @@
 ﻿using System.Text.Json;
+using Clero.Actions;
 
 namespace Clero.Serialization;
 
 public class InputDeserializer
 {
-    public (CellKind[,] Room, Position Position, Direction Direction, string[] Commands, int BatteryLevel) Deserialize(Stream stream)
+    public (CellKind[,] Room, Position Position, Direction Direction, RobotAction[] Commands, int BatteryLevel) Deserialize(Stream stream)
     {
         using var document = JsonDocument.Parse(stream);
         var root = document.RootElement;
@@ -64,7 +65,15 @@ public class InputDeserializer
         };
 
         var commands = root.GetProperty("commands").EnumerateArray()
-            .Select(c => c.GetString() ?? throw new InvalidOperationException("Missing command.")).ToArray();
+            .Select(c => c.GetString() switch
+            {
+                "TR" => RobotActions.TurnRight,
+                "TL" => RobotActions.TurnLeft,
+                "A" => RobotActions.Advance,
+                "B" => RobotActions.Back,
+                "C" => RobotActions.Clean,
+                _ => throw new InvalidOperationException("Invalid command")
+            }).ToArray();
         
         var batteryLevel = root.GetProperty("battery").GetInt32();
 

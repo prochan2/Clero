@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Clero.Actions;
 using Clero.Serialization;
 
 namespace Clero.UnitTests.SerializationTests;
@@ -38,7 +39,16 @@ public class InputDeserializerTests
 
         deserialized.Position.ShouldBe(new(3, 1));
         deserialized.Direction.ShouldBe(Direction.South);
-        deserialized.Commands.ShouldBe(new[] { "TR", "A", "C", "A", "C", "TR", "A", "C" });
+        deserialized.Commands.ShouldBe([
+            RobotActions.TurnRight,
+            RobotActions.Advance,
+            RobotActions.Clean,
+            RobotActions.Advance,
+            RobotActions.Clean,
+            RobotActions.TurnRight,
+            RobotActions.Advance,
+            RobotActions.Clean
+        ]);
         deserialized.BatteryLevel.ShouldBe(1094);
     }
     

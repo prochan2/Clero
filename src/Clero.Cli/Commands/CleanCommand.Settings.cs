@@ -10,5 +10,8 @@ internal partial class CleanCommand
         
         [CommandArgument(1, "<result>")]
         public string ResultFilePath { get; set; } = null!;
+        
+        [CommandOption("--verbose")]
+        public bool Verbose { get; set; }
     }
 }
