@@ -40,8 +40,8 @@ public class RobotMoveTests
     {
         var room = initialDirection switch
         {
-            Direction.North or Direction.South => new[,] { { CellKind.Dirty }, { CellKind.Dirty } },
-            Direction.East or Direction.West => new[,] { { CellKind.Dirty, CellKind.Dirty } },
+            Direction.North or Direction.South => new[,] { { CellKind.DirtyUnvisited }, { CellKind.DirtyUnvisited } },
+            Direction.East or Direction.West => new[,] { { CellKind.DirtyUnvisited, CellKind.DirtyUnvisited } },
             _ => throw new ArgumentOutOfRangeException()
         };
 
@@ -89,13 +89,13 @@ public class RobotMoveTests
     public void AdvancesToObstacle(Direction initialDirection, bool isWall)
     {
         var room = isWall
-            ? new[,] { { CellKind.Dirty } }
+            ? new[,] { { CellKind.DirtyUnvisited } }
             : initialDirection switch
             {
-                Direction.North => new[,] { { CellKind.Obstacle }, { CellKind.Dirty } },
-                Direction.South => new[,] { { CellKind.Dirty }, { CellKind.Obstacle } },
-                Direction.East => new[,] { { CellKind.Dirty, CellKind.Obstacle } },
-                Direction.West => new[,] { { CellKind.Obstacle, CellKind.Dirty } },
+                Direction.North => new[,] { { CellKind.Obstacle }, { CellKind.DirtyUnvisited } },
+                Direction.South => new[,] { { CellKind.DirtyUnvisited }, { CellKind.Obstacle } },
+                Direction.East => new[,] { { CellKind.DirtyUnvisited, CellKind.Obstacle } },
+                Direction.West => new[,] { { CellKind.Obstacle, CellKind.DirtyUnvisited } },
                 _ => throw new ArgumentOutOfRangeException()
             };
 

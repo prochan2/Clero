@@ -2,7 +2,8 @@
 
 public enum CellKind
 {
-    Dirty,
+    DirtyUnvisited,
+    DirtyVisited,
     Clean,
     Obstacle
 }

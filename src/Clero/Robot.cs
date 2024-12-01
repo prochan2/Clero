@@ -20,6 +20,13 @@ public class Robot
         Position = initialPosition;
         Direction = initialDirection;
         BatteryLevel = initialBatteryLevel;
+        
+        if (_room[Position.Y, Position.X] != CellKind.DirtyUnvisited)
+        {
+            throw new ArgumentException("Initial position must be dirty and unvisited.");
+        }
+        
+        _room[Position.Y, Position.X] = CellKind.DirtyVisited;
     }
     
     private bool ConsumeEnergy(int energy)
@@ -110,6 +117,11 @@ public class Robot
         }
         
         Position = newPosition;
+        
+        if (_room[Position.Y, Position.X] == CellKind.DirtyUnvisited)
+        {
+            _room[Position.Y, Position.X] = CellKind.DirtyVisited;
+        }
 
         return ActionResult.Success;
     }

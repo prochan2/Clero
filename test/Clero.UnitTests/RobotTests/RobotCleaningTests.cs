@@ -7,7 +7,7 @@ public class RobotCleaningTests
     [Fact]
     public void RobotCleansCell()
     {
-        var room = new CellKind[,] { { CellKind.Dirty } };
+        var room = new CellKind[,] { { CellKind.DirtyUnvisited } };
         var robot = new Robot(room, new ThrowingBackOffStrategy(), new(0, 0), Direction.North, 5);
         robot.Clean().ShouldBe(ActionResult.Success);
         room[0, 0].ShouldBe(CellKind.Clean);

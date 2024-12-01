@@ -8,7 +8,7 @@ public class RobotTurnTests
     private static Robot CreateTestRobot(
         Direction initialDirection = Direction.North,
         int initialBatteryLevel = 1)
-        => new(new[,] { { CellKind.Dirty } }, new ThrowingBackOffStrategy(), new(0, 0),
+        => new(new[,] { { CellKind.DirtyUnvisited } }, new ThrowingBackOffStrategy(), new(0, 0),
             initialDirection, initialBatteryLevel);
     
     private static void TestTurn(Direction initialDirection, Direction expectedDirection, RobotAction action)

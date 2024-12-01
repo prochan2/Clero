@@ -8,7 +8,7 @@ public class RobotOutOfBatteryTests
     private static void TestActionOutOfBattery(int initialBatteryLevel, RobotAction action)
     {
         // Not running out of battery would cause hitting an obstacle when moving.
-        var room = new[,] { { CellKind.Dirty } };
+        var room = new[,] { { CellKind.DirtyUnvisited } };
         var initialPosition = new Position(0, 0);
         
         var robot = new Robot(
@@ -19,7 +19,7 @@ public class RobotOutOfBatteryTests
             initialBatteryLevel);
 
         action(robot).ShouldBe(ActionResult.OutOfBattery);
-        room[0, 0].ShouldBe(CellKind.Dirty);
+        room[0, 0].ShouldBe(CellKind.DirtyVisited);
         robot.Position.ShouldBe(initialPosition);
         robot.BatteryLevel.ShouldBe(initialBatteryLevel);
     }
