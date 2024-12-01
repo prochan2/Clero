@@ -1,4 +1,5 @@
-﻿using Clero.UnitTests.Services;
+﻿using Clero.Actions;
+using Clero.UnitTests.Services;
 
 namespace Clero.UnitTests.RobotTests;
 
@@ -16,6 +17,19 @@ public class RobotMoveTests
             initialPosition,
             initialDirection,
             initialBatteryLevel);
+    
+    private static void TestMove(
+        CellKind[,] room,
+        Position initialPosition,
+        Direction initialDirection,
+        Position expectedPosition,
+        RobotAction action)
+    {
+        var robot = CreateTestRobot(room, true, initialPosition, initialDirection, 2);
+        action(robot).ShouldBe(ActionResult.Success);
+        robot.Position.ShouldBe(expectedPosition);
+        robot.BatteryLevel.ShouldBe(0);
+    }
     
     [Theory]
     [InlineData(Direction.North)]
@@ -48,59 +62,53 @@ public class RobotMoveTests
             _ => throw new ArgumentOutOfRangeException()
         };
         
-        var robot = CreateTestRobot(room, true, initialPosition, initialDirection, 2);
-        robot.Advance().ShouldBe(ActionResult.Success);
-        robot.Position.ShouldBe(expectedPosition);
-        robot.BatteryLevel.ShouldBe(0);
+        TestMove(room, initialPosition, initialDirection, expectedPosition, RobotActions.Advance);
     }
     
-    [Theory]
-    [InlineData(Direction.North)]
-    [InlineData(Direction.East)]
-    [InlineData(Direction.South)]
-    [InlineData(Direction.West)]
-    public void AdvancesToObstacle(Direction initialDirection)
+    private static void TestMoveToObstacle(
+        CellKind[,] room,
+        Position initialPosition,
+        Direction initialDirection,
+        RobotAction action)
     {
-        var room = initialDirection switch
-        {
-            Direction.North => new[,] { { CellKind.Obstacle }, { CellKind.Dirty } },
-            Direction.South => new[,] { { CellKind.Dirty }, { CellKind.Obstacle } },
-            Direction.East => new[,] { { CellKind.Dirty, CellKind.Obstacle } },
-            Direction.West => new[,] { { CellKind.Obstacle, CellKind.Dirty } },
-            _ => throw new ArgumentOutOfRangeException()
-        };
-
-        var initialPosition = initialDirection switch
-        {
-            Direction.South or Direction.East => new Position(0, 0),
-            Direction.North => new Position(0, 1),
-            Direction.West => new Position(1, 0),
-            _ => throw new ArgumentOutOfRangeException()
-        };
-        
         var robot = CreateTestRobot(room, false, initialPosition, initialDirection, 2);
-        robot.Advance().ShouldBe(ActionResult.Obstacle);
+        action(robot).ShouldBe(ActionResult.Obstacle);
         robot.Position.ShouldBe(initialPosition);
         robot.BatteryLevel.ShouldBe(0);
     }
 
     [Theory]
-    [InlineData(1)]
-    [InlineData(0)]
-    public void AdvancesOutOfBattery(int initialBatteryLevel)
+    [InlineData(Direction.North, false)]
+    [InlineData(Direction.East, false)]
+    [InlineData(Direction.South, false)]
+    [InlineData(Direction.West, false)]
+    [InlineData(Direction.North, true)]
+    [InlineData(Direction.East, true)]
+    [InlineData(Direction.South, true)]
+    [InlineData(Direction.West, true)]
+    public void AdvancesToObstacle(Direction initialDirection, bool isWall)
     {
-        // Not running out of battery would cause hitting an obstacle.
-        var initialPosition = new Position(0, 0);
+        var room = isWall
+            ? new[,] { { CellKind.Dirty } }
+            : initialDirection switch
+            {
+                Direction.North => new[,] { { CellKind.Obstacle }, { CellKind.Dirty } },
+                Direction.South => new[,] { { CellKind.Dirty }, { CellKind.Obstacle } },
+                Direction.East => new[,] { { CellKind.Dirty, CellKind.Obstacle } },
+                Direction.West => new[,] { { CellKind.Obstacle, CellKind.Dirty } },
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
+        var initialPosition = isWall
+            ? new Position(0, 0)
+            : initialDirection switch
+            {
+                Direction.South or Direction.East => new Position(0, 0),
+                Direction.North => new Position(0, 1),
+                Direction.West => new Position(1, 0),
+                _ => throw new ArgumentOutOfRangeException()
+            };
         
-        var robot = CreateTestRobot(
-            new[,] { { CellKind.Dirty } },
-            true,
-            initialPosition,
-            Direction.North,
-            initialBatteryLevel);
-        
-        robot.Advance().ShouldBe(ActionResult.OutOfBattery);
-        robot.Position.ShouldBe(initialPosition);
-        robot.BatteryLevel.ShouldBe(initialBatteryLevel);
+        TestMoveToObstacle(room, initialPosition, initialDirection, RobotActions.Advance);
     }
 }
